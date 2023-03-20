@@ -1,0 +1,6 @@
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/locsearch.dir
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/list_install_components.dir
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/install.dir
+C:/Users/maria/dev/HSE/modernop/locsearch/out/build/x64-Debug/CMakeFiles/install/local.dir

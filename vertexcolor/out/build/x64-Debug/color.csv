@@ -1,7 +1,7 @@
 Instance; Colors; Time (sec)
-myciel3.col; 1; 0
-myciel7.col; 1; 0
-latin_square_10.col; 1; 0
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel3.col; 6; 50.404
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel7.col; 61; 0
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\latin_square_10.col; 1; 0
 school1.col; 1; 0
 school1_nsh.col; 1; 0
 mulsol.i.1.col; 1; 0
@@ -14,7 +14,7 @@ miles1500.col; 1; 0
 fpsol2.i.1.col; 1; 0
 le450_5a.col; 1; 0
 le450_15b.col; 1; 0
-le450_25a.col; 1; 0
+le450_25a.col; 1; 0.001
 games120.col; 1; 0
 queen11_11.col; 1; 0
 queen5_5.col; 1; 0

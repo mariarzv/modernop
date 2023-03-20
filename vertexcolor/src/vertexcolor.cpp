@@ -114,9 +114,21 @@ private:
     vector<unordered_set<int>> neighbour_sets;
 };
 
+string GetProjectFolder() {
+    string path = __FILE__;
+    size_t found = path.find_last_of("\\/");
+
+    // get current project folder
+    string folderPath = path.substr(0, found);
+    return folderPath;
+}
+
 int main()
 {
-    vector<string> files = { "myciel3.col", "myciel7.col", "latin_square_10.col", "school1.col", "school1_nsh.col",
+    string projFolder = GetProjectFolder();
+    string graphF = projFolder + "\\..\\graphs\\";
+
+    vector<string> files = { graphF + "myciel3.col", graphF + "myciel7.col", graphF + "latin_square_10.col", "school1.col", "school1_nsh.col",
         "mulsol.i.1.col", "inithx.i.1.col", "anna.col", "huck.col", "jean.col", "miles1000.col", "miles1500.col",
         "fpsol2.i.1.col", "le450_5a.col", "le450_15b.col", "le450_25a.col", "games120.col",
         "queen11_11.col", "queen5_5.col" };

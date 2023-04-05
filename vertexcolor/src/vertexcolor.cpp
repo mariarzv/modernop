@@ -5,9 +5,32 @@
 #include <sstream>
 #include <random>
 #include <algorithm>
+#include <set>
 #include <unordered_set>
 #include <time.h>
 using namespace std;
+
+class Vertex {
+public:
+    Vertex(int idx) : index(idx), color(-1), colored(false) {}
+
+    int GetIndex() const { return index; }
+    int GetColor() const { return color; }
+    int GetNumNeighbors() const { return neighborsnum; }
+    bool IsColored() const { return colored; }
+    const std::vector<int>& GetNeighbors() const { return neighbors; }
+
+    void SetColor(int c) { color = c; colored = true; }
+    void AddNeighbor(int neighbor_idx) { neighbors.push_back(neighbor_idx); }
+    void SetNumNeighbors(int n) { neighborsnum = n; }
+
+private:
+    int index;             
+    int neighborsnum;     
+    int color;            
+    bool colored;          
+    std::vector<int> neighbors;   
+};
 
 class ColoringProblem
 {
@@ -44,7 +67,7 @@ public:
             {
                 int start, finish;
                 line_input >> command >> start >> finish;
-                // Edges in DIMACS file can be repeated, but it is not a problem for our sets
+                // edges in DIMACS file can be repeated, but it is not a problem for our sets
                 neighbour_sets[start - 1].insert(finish - 1);
                 neighbour_sets[finish - 1].insert(start - 1);
             }
@@ -74,6 +97,56 @@ public:
             // Move the colored vertex to the end and pop it
             swap(uncolored_vertices[uncolored_vertices.size() - 1], uncolored_vertices[index]);
             uncolored_vertices.pop_back();
+        }
+    }
+
+    void WelshPowellGraphColoring()
+    {
+        sorted_vertices[0]->SetColor(1);
+
+        for (int i = 1; i < sorted_vertices.size(); i++) {
+            Vertex* v = sorted_vertices[i];
+            if (!v->IsColored()) {
+                // check if v is connected to any colored vertices
+                bool connected_to_colored = false;
+                for (int j = 0; j < v->GetNeighbors().size(); j++) {
+                    int neighbor_idx = v->GetNeighbors()[j];
+                    Vertex* neighbor = &vertices[neighbor_idx];
+                    if (neighbor->IsColored()) {
+                        connected_to_colored = true;
+                        break;
+                    }
+                }
+
+                if (!connected_to_colored) {
+                    // color of v = 1
+                    v->SetColor(1);
+                }
+                else {
+                    // find the smallest available color that is not being used by v's neighbors
+                    unordered_set<int> neighbor_colors;
+                    for (int j = 0; j < v->GetNeighbors().size(); j++) {
+                        int neighbor_idx = v->GetNeighbors()[j];
+                        Vertex* neighbor = &vertices[neighbor_idx];
+                        if (neighbor->IsColored()) {
+                            neighbor_colors.insert(neighbor->GetColor());
+                        }
+                    }
+
+                    int new_color = 1;
+                    while (neighbor_colors.count(new_color) > 0) {
+                        new_color++;
+                    }
+
+                    // set the color of v to the smallest available color
+                    v->SetColor(new_color);
+                    maxcolor = max(maxcolor, new_color);
+                }
+            }
+        }
+
+        for (int i = 0; i < vertices.size(); i++) {
+            colors[i] = vertices[i].GetColor();
         }
     }
 
@@ -108,10 +181,32 @@ public:
         return colors;
     }
 
+    void ConstructVertexClassList(){
+        for (int i = 0; i < neighbour_sets.size(); i++) {
+            vertices.push_back(Vertex(i)); 
+            Vertex& v = vertices.back(); 
+            v.SetNumNeighbors(neighbour_sets[i].size()); 
+            for (int neighbor_idx : neighbour_sets[i]) {
+                v.AddNeighbor(neighbor_idx); 
+            }
+        }
+    }
+
+    void SortVertexClassObjects() {
+        for (Vertex& v : vertices) {
+            sorted_vertices.push_back(&v);
+        }
+        sort(sorted_vertices.begin(), sorted_vertices.end(), [](const Vertex* v1, const Vertex* v2) {
+            return v1->GetNumNeighbors() > v2->GetNumNeighbors();
+        });
+    }
+
 private:
     vector<int> colors;
     int maxcolor = 1;
     vector<unordered_set<int>> neighbour_sets;
+    vector<Vertex> vertices;
+    vector<Vertex*> sorted_vertices;
 };
 
 string GetProjectFolder() {
@@ -128,10 +223,12 @@ int main()
     string projFolder = GetProjectFolder();
     string graphF = projFolder + "\\..\\graphs\\";
 
-    vector<string> files = { graphF + "myciel3.col", graphF + "myciel7.col", graphF + "latin_square_10.col", "school1.col", "school1_nsh.col",
-        "mulsol.i.1.col", "inithx.i.1.col", "anna.col", "huck.col", "jean.col", "miles1000.col", "miles1500.col",
-        "fpsol2.i.1.col", "le450_5a.col", "le450_15b.col", "le450_25a.col", "games120.col",
-        "queen11_11.col", "queen5_5.col" };
+    vector<string> files = { graphF + "myciel3.col", graphF + "myciel7.col", 
+        graphF + "school1.col", graphF + "school1_nsh.col",
+        graphF + "anna.col", 
+        graphF + "miles1000.col", graphF + "miles1500.col",
+        graphF + "le450_5a.col", graphF + "le450_15b.col", 
+        graphF + "queen11_11.col"};
     ofstream fout("color.csv");
     fout << "Instance; Colors; Time (sec)\n";
     cout << "Instance; Colors; Time (sec)\n";
@@ -140,13 +237,17 @@ int main()
         ColoringProblem problem;
         problem.ReadGraphFile(file);
         clock_t start = clock();
-        problem.GreedyGraphColoring();
+        problem.ConstructVertexClassList();
+        problem.SortVertexClassObjects();
+
+        //problem.GreedyGraphColoring();
+        problem.WelshPowellGraphColoring();
         if (!problem.Check())
         {
             fout << "*** WARNING: incorrect coloring: ***\n";
             cout << "*** WARNING: incorrect coloring: ***\n";
         }
-        fout << file << "; " << problem.GetNumberOfColors() << "; " << double(clock() - start) / CLOCKS_PER_SEC << '\n';
+        fout << file << "; " << problem.GetNumberOfColors() << "; " << double(clock() - start) / CLOCKS_PER_SEC << "; " << problem.GetColors()[0] << '\n';
         cout << file << "; " << problem.GetNumberOfColors() << "; " << double(clock() - start) / CLOCKS_PER_SEC << '\n';
     }
     fout.close();

@@ -1,20 +1,11 @@
 Instance; Colors; Time (sec)
-C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel3.col; 6; 50.404
-C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel7.col; 61; 0
-C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\latin_square_10.col; 1; 0
-school1.col; 1; 0
-school1_nsh.col; 1; 0
-mulsol.i.1.col; 1; 0
-inithx.i.1.col; 1; 0
-anna.col; 1; 0
-huck.col; 1; 0
-jean.col; 1; 0
-miles1000.col; 1; 0
-miles1500.col; 1; 0
-fpsol2.i.1.col; 1; 0
-le450_5a.col; 1; 0
-le450_15b.col; 1; 0
-le450_25a.col; 1; 0.001
-games120.col; 1; 0
-queen11_11.col; 1; 0
-queen5_5.col; 1; 0
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel3.col; 4; 0; 1
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel7.col; 8; 0.006; 2
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\school1.col; 34; 0.033; 26
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\school1_nsh.col; 33; 0.034; 2
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\anna.col; 11; 0.003; 1
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\miles1000.col; 43; 0.009; 17
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\miles1500.col; 73; 0.014; 14
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\le450_5a.col; 12; 0.018; 1
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\le450_15b.col; 18; 0.024; 11
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\queen11_11.col; 17; 0.006; 7

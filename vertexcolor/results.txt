@@ -1,0 +1,11 @@
+Instance; Colors; Time (sec)
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel3.col; 4; 0.003
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\myciel7.col; 8; 0.009
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\school1.col; 34; 0.035
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\school1_nsh.col; 33; 0.027
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\anna.col; 11; 0.003
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\miles1000.col; 43; 0.009
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\miles1500.col; 73; 0.012
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\le450_5a.col; 12; 0.015
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\le450_15b.col; 18; 0.02
+C:\Users\maria\dev\HSE\modernop\vertexcolor\src\..\graphs\queen11_11.col; 17; 0.005

@@ -89,6 +89,59 @@ public:
         }
     }
 
+    void BasicGreedyRandomizedAlgorithm(int randomization, int iterations)
+    {
+        vector<int> best_clique;
+        static mt19937 generator;
+
+        // Repeat the algorithm for the given number of iterations
+        for (int iteration = 0; iteration < iterations; ++iteration)
+        {
+            vector<int> clique;
+            vector<int> candidates(neighbour_sets.size());
+
+            // Initialize the candidates vector
+            for (int i = 0; i < neighbour_sets.size(); ++i)
+            {
+                candidates[i] = i;
+            }
+
+            // Shuffle the candidates vector randomly
+            shuffle(candidates.begin(), candidates.end(), generator);
+
+            // Construct the clique
+            while (!candidates.empty())
+            {
+                int last = candidates.size() - 1;
+                int rnd = GetRandom(0, min(randomization - 1, last));
+                int vertex = candidates[rnd];
+                clique.push_back(vertex);
+
+                // Remove vertices that are not adjacent to the last added vertex
+                for (int c = 0; c < candidates.size(); ++c)
+                {
+                    int candidate = candidates[c];
+                    if (neighbour_sets[vertex].count(candidate) == 0)
+                    {
+                        swap(candidates[c], candidates[last]);
+                        candidates.pop_back();
+                        --c;
+                    }
+                }
+
+                // Shuffle the candidates vector randomly again
+                shuffle(candidates.begin(), candidates.end(), generator);
+            }
+
+            // Update the best clique found so far
+            if (clique.size() > best_clique.size())
+            {
+                best_clique = clique;
+            }
+        }
+
+    }
+
     const vector<int>& GetClique()
     {
         return best_clique;
@@ -120,19 +173,38 @@ private:
     vector<int> best_clique;
 };
 
+string GetProjectFolder() {
+    string path = __FILE__;
+    size_t found = path.find_last_of("\\/");
+
+    // get current project folder
+    string folderPath = path.substr(0, found);
+    return folderPath;
+}
+
 int main()
 {
-    int iterations;
-    cout << "Number of iterations: ";
-    cin >> iterations;
-    int randomization;
-    cout << "Randomization: ";
-    cin >> randomization;
-    vector<string> files = { "C125.9.clq", "johnson8-2-4.clq", "johnson16-2-4.clq", "MANN_a9.clq", "MANN_a27.clq",
-        "p_hat1000-1.clq", "keller4.clq", "hamming8-4.clq", "brock200_1.clq", "brock200_2.clq", "brock200_3.clq", "brock200_4.clq",
-        "gen200_p0.9_44.clq", "gen200_p0.9_55.clq", "brock400_1.clq", "brock400_2.clq", "brock400_3.clq", "brock400_4.clq",
-        "MANN_a45.clq", "sanr400_0.7.clq", "p_hat1000-2.clq", "p_hat500-3.clq", "p_hat1500-1.clq", "p_hat300-3.clq", "san1000.clq",
-        "sanr200_0.9.clq" };
+    string projFolder = GetProjectFolder();
+    string cliqueF = projFolder + "\\..\\cliques\\";
+
+    int iterations = 10000;
+    //cout << "Number of iterations: ";
+    //cin >> iterations;
+    int randomization = 10;
+    //cout << "Randomization: ";
+    //cin >> randomization;
+    vector<string> files = { 
+        cliqueF + "brock200_1.clq", cliqueF + "brock200_2.clq", cliqueF + "brock200_3.clq", cliqueF + "brock200_4.clq",
+        cliqueF + "brock400_1.clq", cliqueF + "brock400_2.clq", cliqueF + "brock400_3.clq", cliqueF + "brock400_4.clq",
+        cliqueF + "C125.9.clq", 
+        cliqueF + "gen200_p0.9_44.clq", cliqueF + "gen200_p0.9_55.clq",
+        cliqueF + "hamming8-4.clq",
+        cliqueF + "johnson16-2-4.clq", cliqueF + "johnson8-2-4.clq",
+        cliqueF + "keller4.clq",
+        cliqueF + "MANN_a27.clq", cliqueF + "MANN_a9.clq",
+        cliqueF + "p_hat1000-1.clq", cliqueF + "p_hat1000-2.clq", cliqueF + "p_hat1500-1.clq", cliqueF + "p_hat300-3.clq", cliqueF + "p_hat500-3.clq",
+        cliqueF + "san1000.clq", cliqueF + "sanr200_0.9.clq", cliqueF + "sanr400_0.7.clq"
+         };
     ofstream fout("clique.csv");
     fout << "File; Clique; Time (sec)\n";
     for (string file : files)
@@ -140,7 +212,8 @@ int main()
         MaxCliqueProblem problem;
         problem.ReadGraphFile(file);
         clock_t start = clock();
-        problem.FindClique(randomization, iterations);
+        problem.BasicGreedyRandomizedAlgorithm(randomization, iterations);
+        //problem.FindClique(randomization, iterations);
         if (!problem.Check())
         {
             cout << "*** WARNING: incorrect clique ***\n";

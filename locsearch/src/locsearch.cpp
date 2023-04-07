@@ -125,6 +125,37 @@ public:
         c_border = 0;
     }
 
+
+    void GetDensity() {
+        int num_edges = 0;
+        for (int i = 0; i < neighbour_sets.size(); i++) {
+            num_edges += neighbour_sets[i].size();
+        }
+        density = static_cast<double>(num_edges) / (neighbour_sets.size() * (neighbour_sets.size() - 1));
+    }
+
+    void GetModularity() {
+        double Q = 0.0;
+        for (int i = 0; i < qco.size(); i++) {
+            int c_i = index[qco[i]];
+            for (int j = i + 1; j < qco.size(); j++) {
+                int c_j = index[qco[j]];
+                if (c_i == c_j) {
+                    Q += 1.0;
+                }
+            }
+        }
+        modularity = Q / (qco.size() * (qco.size() - 1) / 2.0);
+    }
+
+    void GetDegreeDistribution() {
+        vector<int> degree_counts(neighbour_sets.size(), 0);
+        for (int i = 0; i < neighbour_sets.size(); i++) {
+            degree_counts[neighbour_sets[i].size()]++;
+        }
+        degdistr = degree_counts;
+    }
+
 private:
     vector<unordered_set<int>> neighbour_sets;
     vector<unordered_set<int>> non_neighbours;
@@ -133,6 +164,11 @@ private:
     vector<int> index;
     int q_border = 0;
     int c_border = 0;
+
+    // extra params:
+    double density;
+    double modularity;
+    vector<int> degdistr;
 
     int ComputeTightness(int vertex)
     {
@@ -278,6 +314,12 @@ int main()
         MaxCliqueTabuSearch problem;
         problem.ReadGraphFile(file);
         clock_t start = clock();
+
+        problem.GetDegreeDistribution();
+        problem.GetDensity();
+        problem.GetModularity();
+
+
         problem.RunSearch(iterations, randomization);
         if (!problem.Check())
         {

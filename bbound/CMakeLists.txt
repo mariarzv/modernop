@@ -7,5 +7,5 @@ include_directories(
     ${PROJECT_SOURCE_DIR}/include
 )
 
-add_executable(branchbound "src/branchbound.cpp" "include/branchbound.h")
-install (TARGETS branchbound DESTINATION "branchbound/out/build")
+add_executable(bbound "src/bbound.cpp" "include/bbound.h")
+install (TARGETS bbound DESTINATION "bbound/out/build")
